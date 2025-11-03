@@ -1,0 +1,141 @@
+Rudderstack SDET Automation Framework
+
+This project is an end-to-end (E2E) test automation framework built to test a core user flow in the Rudderstack application. It was created as part of the SDET assignment.
+
+The test scenario is:
+
+Log in to the application (handling the 2FA setup flow).
+
+On the "Connections" page, find and dismiss any pop-ups.
+
+Read and store the Data Plane URL.
+
+Read and store the Write Key from a specific HTTP Source ("Sparsh").
+
+Use the axios library to send an API event to the Data Plane URL.
+
+Navigate to the "Webhook" Destination.
+
+Switch to the "Events" tab.
+
+Read and log the "Delivered" and "Failed" event counts to the console.
+
+Tech Stack
+
+Language: TypeScript
+
+Automation Framework: WebdriverIO (v9)
+
+Test Runner: CucumberJS (for BDD)
+
+HTTP Client: Axios (for making the API call)
+
+CI/CD: GitHub Actions
+
+Framework Design
+
+This framework is built using the Page Object Model (POM) and Behavior-Driven Development (BDD).
+
+BDD (/features): The test case is written in plain English using Gherkin syntax. This separates the behavior of the test from its implementation.
+
+Page Objects (/pageobjects): Each page of the application (Login, Connections, Destination) has its own class. This class is responsible for storing all selectors and functions for that page. This makes the framework easy to maintain.
+
+Step Definitions (/step-definitions): This is the "glue" layer that connects the plain-English steps from the .feature file to the automation code in the Page Objects.
+
+Project Structure
+
+/rudderstack-wdio-cucumber
+├── .env.qa                 # Environment file for QA credentials
+├── .env.prod               # Environment file for Prod credentials
+├── .github/
+│   └── workflows/
+│       └── daily-run.yml   # GitHub Actions workflow for CI/CD
+├── features/
+│   └── rudderstack.feature # The Cucumber test case in plain English
+├── pageobjects/
+│   ├── login.page.ts       # Selectors and functions for the Login page
+│   ├── connections.page.ts # Selectors and functions for the Connections page
+│   └── destination.page.ts # Selectors and functions for the Destination page
+├── step-definitions/
+│   └── rudderstack.steps.ts# The "glue" code connecting features to page objects
+├── utils/
+│   └── api.helper.ts       # A helper class for making the API call
+├── .gitignore
+├── package.json
+├── README.md
+└── tsconfig.json
+
+
+1. Manual Setup (Prerequisites)
+
+Before running this test, you must set up the following in your Rudderstack account:
+
+Sign Up: Create a free Rudderstack account.
+
+Create Source: Create an HTTP Source. For this test, name it "Sparsh".
+
+Create Destination: Create a Webhook Destination. Name it "Webhook". Use a URL from a service like RequestCatcher for the destination URL.
+
+Connect Them: This is the most important step. Go to your "Sparsh" Source, click "Add destination," and connect it to your "Webhook" Destination.
+
+2. Local Installation & Setup
+
+To run this framework on your local machine:
+
+Clone the repository:
+
+git clone <your-repo-url>
+cd rudderstack-wdio-cucumber
+
+
+Install dependencies:
+
+npm install
+
+
+Create Environment File:
+Create a file named .env.qa in the root of the project. This file is ignored by Git and is where you store your secrets. Add your credentials:
+
+RUDDERSTACK_USER="your-rudderstack-email@example.com"
+RUDDERSTACK_PASS="your-rudderstack-password"
+
+
+3. How to Run Tests
+
+The framework is configured to run in two environments, "qa" and "prod".
+
+To run the QA test:
+
+npm run test:qa
+
+
+To run the Prod test:
+
+npm run test:prod
+
+
+The test will launch a Chrome browser, execute the full E2E scenario, and print the final event counts to the terminal.
+
+4. CI/CD - GitHub Actions
+
+This project includes a GitHub Actions workflow located at .github/workflows/daily-run.yml.
+
+What it does: This workflow automatically runs the npm run test:qa command.
+
+Triggers:
+
+on: schedule: cron: '0 8 * * *': Runs the test on a schedule, every day at 8:00 AM UTC.
+
+on: workflow_dispatch:: Allows the test to be run manually from the "Actions" tab in GitHub.
+
+To make this work in your repository, you must add your credentials as secrets:
+
+In your GitHub repo, go to Settings > Secrets and variables > Actions.
+
+Click New repository secret.
+
+Create a secret named RUDDERSTACK_USER and paste your email.
+
+Create another secret named RUDDERSTACK_PASS and paste your password.
+
+The workflow is now ready and will run automatically.

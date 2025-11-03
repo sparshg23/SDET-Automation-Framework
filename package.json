@@ -1,0 +1,31 @@
+{
+  "name": "assignment",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx wdio run wdio.conf.ts",
+    "test:qa": "ENV=qa npm run test",
+    "test:prod": "ENV=prod npm run test"
+  },
+  "keywords": [
+    "wdio",
+    "cucumber",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@wdio/cli": "^9.20.0",
+    "@wdio/cucumber-framework": "^9.20.0",
+    "@wdio/local-runner": "^9.20.0",
+    "@wdio/mocha-framework": "^9.20.0",
+    "@wdio/spec-reporter": "^9.20.0",
+    "axios": "^1.13.1",
+    "chromedriver": "^142.0.0",
+    "dotenv": "^17.2.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
